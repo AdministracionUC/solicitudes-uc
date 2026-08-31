@@ -1,161 +1,114 @@
-* { box-sizing: border-box; }
+// ============================================
+// CONFIGURA ESTO: pega la URL de tu Web App de Apps Script
+// (termina en /exec)
+// ============================================
+const URL_APPS_SCRIPT = 'https://script.google.com/macros/s/AKfycbwv6hQCKk1M36u5lmXTcCkeGKGDqRd_cu7UaREHKgCLC2bVDlD9AOGY0B1qqYyXJ_984w/exec';
 
-body {
-  font-family: 'Segoe UI', Arial, sans-serif;
-  background: #f2f4f7;
-  margin: 0;
-  padding: 24px 12px;
-  color: #1f2937;
+let codigosDisponibles = []; // [{codigo, descripcion}, ...]
+
+const contenedorProductos = document.getElementById('productos');
+const plantilla = document.getElementById('plantillaProducto');
+const datalist = document.getElementById('listaCodigos');
+const mensaje = document.getElementById('mensaje');
+
+// 1. Cargar el listado de códigos al abrir la página
+async function cargarCodigos() {
+  try {
+    const resp = await fetch(`${URL_APPS_SCRIPT}?action=codigos`);
+    const data = await resp.json();
+    if (data.status === 'ok') {
+      codigosDisponibles = data.codigos;
+      datalist.innerHTML = codigosDisponibles
+        .map(c => `<option value="${c.codigo}">${c.descripcion}</option>`)
+        .join('');
+    }
+  } catch (err) {
+    mostrarMensaje('No se pudo cargar el listado de códigos. Verifica la conexión.', 'error');
+  }
 }
 
-.contenedor {
-  max-width: 640px;
-  margin: 0 auto;
-  background: #fff;
-  border-radius: 12px;
-  padding: 28px;
-  border: 1px solid #111111;
-  box-shadow: 0 4px 14px rgba(0,0,0,0.10);
+// 2. Crear un bloque de producto nuevo
+function agregarProducto() {
+  const nodo = plantilla.content.cloneNode(true);
+  const div = nodo.querySelector('.producto');
+
+  const inputCodigo = div.querySelector('.input-codigo');
+  const inputDescripcion = div.querySelector('.input-descripcion');
+  const btnQuitar = div.querySelector('.btn-quitar');
+
+  // Autocompletar descripción según el código escrito/seleccionado
+  inputCodigo.addEventListener('input', () => {
+    const encontrado = codigosDisponibles.find(
+      c => c.codigo.toLowerCase() === inputCodigo.value.trim().toLowerCase()
+    );
+    inputDescripcion.value = encontrado ? encontrado.descripcion : '';
+  });
+
+  btnQuitar.addEventListener('click', () => {
+    if (contenedorProductos.children.length > 1) {
+      div.remove();
+    } else {
+      mostrarMensaje('Debe quedar al menos un producto.', 'error');
+    }
+  });
+
+  contenedorProductos.appendChild(div);
 }
 
-.encabezado-uc {
-  display: flex;
-  align-items: center;
-  padding-bottom: 16px;
-  margin-bottom: 22px;
-  border-bottom: 3px solid #111111;
+// 3. Armar y enviar la solicitud
+async function enviarSolicitud(e) {
+  e.preventDefault();
+  const btnEnviar = document.getElementById('btnEnviar');
+  btnEnviar.disabled = true;
+  mostrarMensaje('Enviando solicitud...', '');
+
+  const nombres = document.getElementById('nombres').value.trim();
+  const correo = document.getElementById('correo').value.trim();
+  const centroCostos = document.getElementById('centroCostos').value.trim();
+  const bloquesProducto = document.querySelectorAll('.producto');
+
+  try {
+    const items = [];
+    for (const bloque of bloquesProducto) {
+      const codigo = bloque.querySelector('.input-codigo').value.trim();
+      const descripcion = bloque.querySelector('.input-descripcion').value.trim();
+      const cantidad = bloque.querySelector('.input-cantidad').value;
+      const unidad = bloque.querySelector('.input-unidad').value;
+      const referenciaTexto = bloque.querySelector('.input-ref-texto').value.trim();
+
+      items.push({ codigo, descripcion, cantidad, unidad, referenciaTexto });
+    }
+
+    // Content-Type text/plain evita el preflight CORS con Apps Script
+    const resp = await fetch(URL_APPS_SCRIPT, {
+      method: 'POST',
+      headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+      body: JSON.stringify({ nombres, correo, centroCostos, items })
+    });
+    const data = await resp.json();
+
+    if (data.status === 'ok') {
+      mostrarMensaje('Solicitud enviada correctamente.', 'exito');
+      document.getElementById('formSolicitud').reset();
+      contenedorProductos.innerHTML = '';
+      agregarProducto();
+    } else {
+      mostrarMensaje('Error: ' + data.mensaje, 'error');
+    }
+  } catch (err) {
+    mostrarMensaje('No se pudo enviar la solicitud. Intenta de nuevo.', 'error');
+  } finally {
+    btnEnviar.disabled = false;
+  }
 }
 
-.marca-texto {
-  position: relative;
-  padding-left: 16px;
-  font-weight: 800;
-  font-size: 21px;
-  line-height: 1.15;
-  color: #111111;
-  text-transform: uppercase;
-  letter-spacing: 0.8px;
+function mostrarMensaje(texto, tipo) {
+  mensaje.textContent = texto;
+  mensaje.className = tipo;
 }
 
-.marca-texto::before {
-  content: '';
-  position: absolute;
-  left: 0;
-  top: 1px;
-  bottom: 1px;
-  width: 5px;
-  border-radius: 3px;
-  background: linear-gradient(180deg, #c8102e 0%, #111111 100%);
-}
+document.getElementById('btnAgregar').addEventListener('click', agregarProducto);
+document.getElementById('formSolicitud').addEventListener('submit', enviarSolicitud);
 
-h1 {
-  font-size: 20px;
-  margin-bottom: 4px;
-  color: #111111;
-}
-
-.titulo-centrado {
-  text-align: center;
-}
-
-.nota {
-  color: #6b7280;
-  font-size: 13px;
-  margin-top: 0;
-  margin-bottom: 20px;
-}
-
-.nota-centrada {
-  text-align: center;
-}
-
-.fila-datos {
-  display: flex;
-  gap: 14px;
-  flex-wrap: wrap;
-}
-
-.campo {
-  flex: 1;
-  min-width: 140px;
-  margin-bottom: 14px;
-}
-
-label {
-  display: block;
-  font-size: 13px;
-  font-weight: 600;
-  margin-bottom: 4px;
-  color: #374151;
-}
-
-input[type="text"], input[type="email"], input[type="number"], select, textarea {
-  width: 100%;
-  padding: 9px 10px;
-  border: 1px solid #d1d5db;
-  border-radius: 8px;
-  font-size: 14px;
-}
-
-textarea {
-  min-height: 60px;
-  resize: vertical;
-}
-
-.producto {
-  position: relative;
-  border: 1px solid #e5e7eb;
-  border-radius: 10px;
-  padding: 16px;
-  margin-bottom: 16px;
-  background: #fafafa;
-}
-
-.btn-quitar {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  background: none;
-  border: none;
-  color: #9ca3af;
-  font-size: 16px;
-  cursor: pointer;
-}
-.btn-quitar:hover { color: #dc2626; }
-
-.btn-secundario {
-  background: #f2f2f2;
-  color: #111111;
-  border: 1px dashed #111111;
-  border-radius: 8px;
-  padding: 10px 14px;
-  cursor: pointer;
-  width: 100%;
-  font-size: 14px;
-  margin-bottom: 20px;
-}
-.btn-secundario:hover { background: #e6e6e6; }
-
-.acciones {
-  text-align: right;
-}
-
-.btn-primario {
-  background: #111111;
-  color: #fff;
-  border: none;
-  border-radius: 8px;
-  padding: 11px 24px;
-  font-size: 14px;
-  cursor: pointer;
-}
-.btn-primario:hover { background: #000000; }
-.btn-primario:disabled { background: #9a9a9a; cursor: not-allowed; }
-
-#mensaje {
-  margin-top: 14px;
-  font-size: 14px;
-  text-align: center;
-}
-#mensaje.exito { color: #15803d; }
-#mensaje.error { color: #dc2626; }
+cargarCodigos();
+agregarProducto(); // primer producto visible al cargar
