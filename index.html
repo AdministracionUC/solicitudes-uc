@@ -13,18 +13,24 @@
       <span class="marca-texto">UNIVERSIDAD CONTINENTAL</span>
     </div>
 
-    <h1>Formato de Solicitud de Útiles de Escritorio</h1>
-    <p class="nota">Filial: CUSCO — Uso interno de las áreas.</p>
+    <h1 class="titulo-centrado">Formato de Solicitud de Útiles de Escritorio</h1>
+    <p class="nota nota-centrada">Campus Cusco — Uso interno de las áreas.</p>
 
     <form id="formSolicitud">
       <div class="fila-datos">
         <div class="campo">
-          <label for="dni">DNI</label>
-          <input type="text" id="dni" required maxlength="8" pattern="[0-9]{8}" placeholder="12345678">
+          <label for="nombres">Nombres y apellidos completos</label>
+          <input type="text" id="nombres" required placeholder="Ej. Juan Pérez Quispe">
         </div>
         <div class="campo">
           <label for="correo">Correo institucional</label>
           <input type="email" id="correo" required placeholder="nombre@continental.edu.pe">
+        </div>
+      </div>
+      <div class="fila-datos">
+        <div class="campo">
+          <label for="centroCostos">Centro de costos</label>
+          <input type="text" id="centroCostos" required placeholder="Ej. 005400">
         </div>
       </div>
 
@@ -75,13 +81,6 @@
       <div class="campo">
         <label>Referencia (opcional)</label>
         <textarea class="input-ref-texto" placeholder="Describe la referencia técnica (marca, color, tamaño, etc.)"></textarea>
-        <label class="label-imagen">O adjunta una imagen (puedes poner los dos)</label>
-        <label class="btn-archivo">
-          <span class="icono-clip">📎</span>
-          <span class="texto-btn-archivo">Elegir imagen</span>
-          <input type="file" class="input-ref-imagen" accept="image/*">
-        </label>
-        <span class="nombre-archivo">Ningún archivo seleccionado</span>
       </div>
     </div>
   </template>
