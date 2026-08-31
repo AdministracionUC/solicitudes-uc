@@ -1,0 +1,162 @@
+* { box-sizing: border-box; }
+
+body {
+  font-family: 'Segoe UI', Arial, sans-serif;
+  background: #f2f4f7;
+  margin: 0;
+  padding: 24px 12px;
+  color: #1f2937;
+}
+
+.contenedor {
+  max-width: 640px;
+  margin: 0 auto;
+  background: #fff;
+  border-radius: 12px;
+  padding: 28px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+}
+
+.encabezado-uc {
+  margin-bottom: 18px;
+}
+
+.logo-uc {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.marca-c {
+  width: 38px;
+  height: 38px;
+  border: 3px solid #111;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  font-size: 18px;
+  color: #111;
+  flex-shrink: 0;
+}
+
+.marca-texto {
+  font-weight: 700;
+  font-size: 15px;
+  line-height: 1.15;
+  color: #111;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+}
+
+h1 {
+  font-size: 20px;
+  margin-bottom: 4px;
+  color: #111111;
+}
+
+.nota {
+  color: #6b7280;
+  font-size: 13px;
+  margin-top: 0;
+  margin-bottom: 20px;
+}
+
+.fila-datos {
+  display: flex;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
+.campo {
+  flex: 1;
+  min-width: 140px;
+  margin-bottom: 14px;
+}
+
+label {
+  display: block;
+  font-size: 13px;
+  font-weight: 600;
+  margin-bottom: 4px;
+  color: #374151;
+}
+
+input[type="text"], input[type="email"], input[type="number"], select, textarea {
+  width: 100%;
+  padding: 9px 10px;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  font-size: 14px;
+}
+
+textarea {
+  min-height: 60px;
+  resize: vertical;
+}
+
+.producto {
+  position: relative;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  padding: 16px;
+  margin-bottom: 16px;
+  background: #fafafa;
+}
+
+.btn-quitar {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: none;
+  border: none;
+  color: #9ca3af;
+  font-size: 16px;
+  cursor: pointer;
+}
+.btn-quitar:hover { color: #dc2626; }
+
+.label-imagen {
+  margin-top: 10px;
+  font-weight: 400;
+  font-size: 12px;
+  color: #6b7280;
+}
+
+.btn-secundario {
+  background: #f2f2f2;
+  color: #111111;
+  border: 1px dashed #111111;
+  border-radius: 8px;
+  padding: 10px 14px;
+  cursor: pointer;
+  width: 100%;
+  font-size: 14px;
+  margin-bottom: 20px;
+}
+.btn-secundario:hover { background: #e6e6e6; }
+
+.acciones {
+  text-align: right;
+}
+
+.btn-primario {
+  background: #111111;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 11px 24px;
+  font-size: 14px;
+  cursor: pointer;
+}
+.btn-primario:hover { background: #000000; }
+.btn-primario:disabled { background: #9a9a9a; cursor: not-allowed; }
+
+#mensaje {
+  margin-top: 14px;
+  font-size: 14px;
+  text-align: center;
+}
+#mensaje.exito { color: #15803d; }
+#mensaje.error { color: #dc2626; }
