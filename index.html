@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Solicitud de Útiles de Escritorio</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <div class="contenedor">
+    <div class="encabezado-uc">
+      <div class="logo-uc">
+        <span class="marca-c">C</span>
+        <span class="marca-texto">Universidad<br>Continental</span>
+      </div>
+    </div>
+
+    <h1>Formato de Solicitud de Útiles de Escritorio</h1>
+    <p class="nota">Filial: CUSCO — Uso interno de las áreas.</p>
+
+    <form id="formSolicitud">
+      <div class="fila-datos">
+        <div class="campo">
+          <label for="dni">DNI</label>
+          <input type="text" id="dni" required maxlength="8" pattern="[0-9]{8}" placeholder="12345678">
+        </div>
+        <div class="campo">
+          <label for="correo">Correo institucional</label>
+          <input type="email" id="correo" required placeholder="nombre@continental.edu.pe">
+        </div>
+      </div>
+
+      <div id="productos"></div>
+
+      <button type="button" id="btnAgregar" class="btn-secundario">+ Agregar otro producto</button>
+
+      <div class="acciones">
+        <button type="submit" id="btnEnviar" class="btn-primario">Enviar solicitud</button>
+      </div>
+
+      <p id="mensaje"></p>
+    </form>
+  </div>
+
+  <template id="plantillaProducto">
+    <div class="producto">
+      <button type="button" class="btn-quitar" title="Quitar producto">✕</button>
+
+      <div class="campo">
+        <label>Código</label>
+        <input type="text" class="input-codigo" list="listaCodigos" autocomplete="off" required placeholder="Escribe o busca el código">
+      </div>
+
+      <div class="campo">
+        <label>Descripción del producto</label>
+        <input type="text" class="input-descripcion" readonly placeholder="Se completa automáticamente">
+      </div>
+
+      <div class="fila-datos">
+        <div class="campo">
+          <label>Cantidad</label>
+          <input type="number" class="input-cantidad" min="1" required>
+        </div>
+        <div class="campo">
+          <label>Unidad</label>
+          <select class="input-unidad" required>
+            <option value="UND">Unidad</option>
+            <option value="CAJA">Caja</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="campo">
+        <label>Referencia (opcional)</label>
+        <textarea class="input-ref-texto" placeholder="Describe la referencia técnica (marca, color, tamaño, etc.)"></textarea>
+        <label class="label-imagen">O adjunta una imagen (puedes poner los dos)</label>
+        <input type="file" class="input-ref-imagen" accept="image/*">
+      </div>
+    </div>
+  </template>
+
+  <datalist id="listaCodigos"></datalist>
+
+  <script src="script.js"></script>
+</body>
+</html>
