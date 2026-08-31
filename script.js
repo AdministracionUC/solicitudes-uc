@@ -35,14 +35,6 @@ function agregarProducto() {
   const inputCodigo = div.querySelector('.input-codigo');
   const inputDescripcion = div.querySelector('.input-descripcion');
   const btnQuitar = div.querySelector('.btn-quitar');
-  const inputArchivo = div.querySelector('.input-ref-imagen');
-  const nombreArchivo = div.querySelector('.nombre-archivo');
-
-  inputArchivo.addEventListener('change', () => {
-    nombreArchivo.textContent = inputArchivo.files[0]
-      ? inputArchivo.files[0].name
-      : 'Ningún archivo seleccionado';
-  });
 
   // Autocompletar descripción según el código escrito/seleccionado
   inputCodigo.addEventListener('input', () => {
@@ -63,25 +55,16 @@ function agregarProducto() {
   contenedorProductos.appendChild(div);
 }
 
-// 3. Convertir un archivo de imagen a base64
-function archivoABase64(archivo) {
-  return new Promise((resolve, reject) => {
-    const lector = new FileReader();
-    lector.onload = () => resolve(lector.result.split(',')[1]);
-    lector.onerror = reject;
-    lector.readAsDataURL(archivo);
-  });
-}
-
-// 4. Armar y enviar la solicitud
+// 3. Armar y enviar la solicitud
 async function enviarSolicitud(e) {
   e.preventDefault();
   const btnEnviar = document.getElementById('btnEnviar');
   btnEnviar.disabled = true;
   mostrarMensaje('Enviando solicitud...', '');
 
-  const dni = document.getElementById('dni').value.trim();
+  const nombres = document.getElementById('nombres').value.trim();
   const correo = document.getElementById('correo').value.trim();
+  const centroCostos = document.getElementById('centroCostos').value.trim();
   const bloquesProducto = document.querySelectorAll('.producto');
 
   try {
@@ -91,26 +74,16 @@ async function enviarSolicitud(e) {
       const descripcion = bloque.querySelector('.input-descripcion').value.trim();
       const cantidad = bloque.querySelector('.input-cantidad').value;
       const unidad = bloque.querySelector('.input-unidad').value;
+      const referenciaTexto = bloque.querySelector('.input-ref-texto').value.trim();
 
-      const item = { codigo, descripcion, cantidad, unidad };
-      item.referenciaTexto = bloque.querySelector('.input-ref-texto').value.trim();
-
-      // El docente puede llenar texto, subir imagen, o ambos a la vez
-      const archivo = bloque.querySelector('.input-ref-imagen').files[0];
-      if (archivo) {
-        item.imagenBase64 = await archivoABase64(archivo);
-        item.imagenNombre = archivo.name;
-        item.imagenTipo = archivo.type;
-      }
-
-      items.push(item);
+      items.push({ codigo, descripcion, cantidad, unidad, referenciaTexto });
     }
 
     // Content-Type text/plain evita el preflight CORS con Apps Script
     const resp = await fetch(URL_APPS_SCRIPT, {
       method: 'POST',
       headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-      body: JSON.stringify({ dni, correo, items })
+      body: JSON.stringify({ nombres, correo, centroCostos, items })
     });
     const data = await resp.json();
 
