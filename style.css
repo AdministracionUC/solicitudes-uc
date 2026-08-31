@@ -14,7 +14,8 @@ body {
   background: #fff;
   border-radius: 12px;
   padding: 28px;
-  box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+  border: 1px solid #111111;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.10);
 }
 
 .encabezado-uc {
@@ -53,11 +54,19 @@ h1 {
   color: #111111;
 }
 
+.titulo-centrado {
+  text-align: center;
+}
+
 .nota {
   color: #6b7280;
   font-size: 13px;
   margin-top: 0;
   margin-bottom: 20px;
+}
+
+.nota-centrada {
+  text-align: center;
 }
 
 .fila-datos {
@@ -113,48 +122,6 @@ textarea {
   cursor: pointer;
 }
 .btn-quitar:hover { color: #dc2626; }
-
-.label-imagen {
-  margin-top: 10px;
-  font-weight: 400;
-  font-size: 12px;
-  color: #6b7280;
-}
-
-.btn-archivo {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  margin-top: 6px;
-  padding: 9px 16px;
-  background: #111111;
-  color: #fff;
-  border-radius: 8px;
-  font-size: 13px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: background 0.15s;
-}
-.btn-archivo:hover { background: #c8102e; }
-
-.icono-clip { font-size: 14px; }
-
-.input-ref-imagen {
-  /* el input real queda invisible; el label de arriba hace de botón */
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  overflow: hidden;
-  opacity: 0;
-}
-
-.nombre-archivo {
-  display: inline-block;
-  margin-left: 10px;
-  font-size: 12px;
-  color: #6b7280;
-  vertical-align: middle;
-}
 
 .btn-secundario {
   background: #f2f2f2;
