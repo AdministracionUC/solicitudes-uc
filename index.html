@@ -10,10 +10,7 @@
 
   <div class="contenedor">
     <div class="encabezado-uc">
-      <div class="logo-uc">
-        <span class="marca-c">C</span>
-        <span class="marca-texto">Universidad<br>Continental</span>
-      </div>
+      <span class="marca-texto">UNIVERSIDAD CONTINENTAL</span>
     </div>
 
     <h1>Formato de Solicitud de Útiles de Escritorio</h1>
@@ -67,6 +64,10 @@
           <select class="input-unidad" required>
             <option value="UND">Unidad</option>
             <option value="CAJA">Caja</option>
+            <option value="PAQUETE">Paquete</option>
+            <option value="CIENTO">Ciento</option>
+            <option value="MILLAR">Millar</option>
+            <option value="DOCENA">Docena</option>
           </select>
         </div>
       </div>
@@ -75,7 +76,12 @@
         <label>Referencia (opcional)</label>
         <textarea class="input-ref-texto" placeholder="Describe la referencia técnica (marca, color, tamaño, etc.)"></textarea>
         <label class="label-imagen">O adjunta una imagen (puedes poner los dos)</label>
-        <input type="file" class="input-ref-imagen" accept="image/*">
+        <label class="btn-archivo">
+          <span class="icono-clip">📎</span>
+          <span class="texto-btn-archivo">Elegir imagen</span>
+          <input type="file" class="input-ref-imagen" accept="image/*">
+        </label>
+        <span class="nombre-archivo">Ningún archivo seleccionado</span>
       </div>
     </div>
   </template>
