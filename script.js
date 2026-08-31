@@ -35,6 +35,14 @@ function agregarProducto() {
   const inputCodigo = div.querySelector('.input-codigo');
   const inputDescripcion = div.querySelector('.input-descripcion');
   const btnQuitar = div.querySelector('.btn-quitar');
+  const inputArchivo = div.querySelector('.input-ref-imagen');
+  const nombreArchivo = div.querySelector('.nombre-archivo');
+
+  inputArchivo.addEventListener('change', () => {
+    nombreArchivo.textContent = inputArchivo.files[0]
+      ? inputArchivo.files[0].name
+      : 'Ningún archivo seleccionado';
+  });
 
   // Autocompletar descripción según el código escrito/seleccionado
   inputCodigo.addEventListener('input', () => {
