@@ -239,6 +239,11 @@ textarea {
         <label>Referencia (opcional)</label>
         <textarea class="input-ref-texto" placeholder="Describe la referencia técnica (marca, color, tamaño, etc.)"></textarea>
       </div>
+
+      <div class="campo">
+        <label>Comentarios (opcional)</label>
+        <textarea class="input-comentarios" placeholder="Alguna observación adicional sobre este producto"></textarea>
+      </div>
     </div>
   </template>
 
@@ -320,8 +325,9 @@ async function enviarSolicitud(e) {
       const cantidad = bloque.querySelector('.input-cantidad').value;
       const unidad = bloque.querySelector('.input-unidad').value;
       const referenciaTexto = bloque.querySelector('.input-ref-texto').value.trim();
+      const comentarios = bloque.querySelector('.input-comentarios').value.trim();
 
-      items.push({ codigo, descripcion, cantidad, unidad, referenciaTexto });
+      items.push({ codigo, descripcion, cantidad, unidad, referenciaTexto, comentarios });
     }
 
     const resp = await fetch(URL_APPS_SCRIPT, {
